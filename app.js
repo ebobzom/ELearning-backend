@@ -6,6 +6,7 @@ const hpp = require('hpp');
 require('dotenv').config();
 
 const signuRouter =  require('./src/controllers/signup');
+const loginRouter =  require('./src/controllers/login');
 const baseUrl = process.env.BASE_URL;
 
 const limiter = rateLimit({
@@ -32,6 +33,7 @@ app.use(hpp());
 
 // All Routes
 app.use(baseUrl + '/signup', signuRouter);
+app.use(baseUrl + '/login', loginRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

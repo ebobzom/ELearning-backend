@@ -43,7 +43,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
         if(queryErr){
             res.status(500).json({
                 status: 'error',
-                error: 'An error occured, please contact admin'
+                error: 'An error occurred, please contact admin'
             });
             return;
         }
@@ -62,7 +62,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
             if(err){
                 return res.status(500).json({
                     status: 'error',
-                    error: 'An error occured, please contact admin'
+                    error: 'An error occurred, please contact admin'
                 })
             }  
 
@@ -79,7 +79,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
                 if(dbErr){
                     res.status(500).json({
                         status: 'error',
-                        error: 'An error occured, please contact admin'
+                        error: 'An error occurred, please contact admin'
                     })
                     
                     return;
@@ -96,7 +96,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
                     if(jwtErr){
                         res.status(500).json({
                             status: 'error',
-                            error: 'An error occured, please contact admin'
+                            error: 'An error occurred, please contact admin'
                         })
                         return;
                     }
