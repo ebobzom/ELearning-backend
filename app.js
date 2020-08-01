@@ -9,6 +9,8 @@ const signuRouter =  require('./src/controllers/signup');
 const loginRouter =  require('./src/controllers/login');
 const logout = require('./src/controllers/logout');
 const comfirmEmailController = require('./src/controllers/GET/confirmEmail');
+const forgotPasswordRouter = require('./src/controllers/CREATE/forgotPassword');
+
 const baseUrl = process.env.BASE_URL;
 
 const limiter = rateLimit({
@@ -32,12 +34,13 @@ app.use(cookieparser({
 app.use(limiter);
 app.use(hpp());
 
-
 // All Routes
 app.use(baseUrl + '/signup', signuRouter);
 app.use(baseUrl + '/login', loginRouter);
 app.use(baseUrl + '/logout', logout);
 app.use(baseUrl + '/comfirmEmail', comfirmEmailController);
+app.use(baseUrl, forgotPasswordRouter);
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

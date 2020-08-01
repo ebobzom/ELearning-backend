@@ -117,7 +117,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
                         to: dataSentToDb.email,
                         subject: "Welcome to ELearning",
                         htmlTemplate: `
-                        <div style="background-color: whitesmoke; width: 100%; border: 2px solid grey;">
+                        <div>
                             <div style="margin: 0 6px;">
                                 <h1 style="color:blue; font-weight: bold;"> Welcome ${dataSentToDb.first_name}</h1>
                                 <P> Please <a href=${confirmationUrl} style="color:red; text-decoration: none;">Click HERE</a> to comfirm your account.</P>

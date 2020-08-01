@@ -15,7 +15,7 @@ confirmEmailController.get('/:userId', (req, res) => {
             return;
         }
         if(result.affectedRows > 0){
-            res.redirect('https://google.com'); //resdirect to login page ( add a params that frond end can use to determine if confirmed so a message is shown)
+            res.redirect('https://google.com'); //resdirect to login page ( add a params that front end can use to determine if confirmed so a message is shown)
             return;
         }
         res.status(400).json({
