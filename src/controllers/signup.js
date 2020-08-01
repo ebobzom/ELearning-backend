@@ -3,10 +3,11 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
+const sendEmail = require('../utils/sendEmail');
 const db = require('../config/db');
 const signuRouter = express.Router();
 
-const signupValidation = require('../validation/Create/signup-validation');
+const signupValidation = require('../validation/CREATE/signup-validation');
 
 signuRouter.post('/', signupValidation, (req, res) => {
 
@@ -25,9 +26,18 @@ signuRouter.post('/', signupValidation, (req, res) => {
         lastName: last_name,
         email,
         password,
+        confirmPassword,
         isAdmin: is_admin 
 
     } = req.body;
+
+    if(password != confirmPassword){
+        res.status(400).json({
+            status: 'error',
+            error: 'password does not match'
+        });
+        return;
+    }
 
     const dataSentToDb = {
         first_name,
@@ -57,13 +67,12 @@ signuRouter.post('/', signupValidation, (req, res) => {
         }
 
         // hash password
-
         bcrypt.hash(dataSentToDb.password, 10, (err, hash) => {
             if(err){
                 return res.status(500).json({
                     status: 'error',
                     error: 'An error occurred, please contact admin'
-                })
+                });
             }  
 
             // modify user password and assign primary key
@@ -74,13 +83,13 @@ signuRouter.post('/', signupValidation, (req, res) => {
             // create user in db
 
             const queryString = 'INSERT INTO users SET ?'
-            db.query(queryString, dataSentToDb, (dbErr, result) => {
+            db.query(queryString, dataSentToDb, (dbErr) => {
 
                 if(dbErr){
                     res.status(500).json({
                         status: 'error',
                         error: 'An error occurred, please contact admin'
-                    })
+                    });
                     
                     return;
                 }
@@ -100,19 +109,52 @@ signuRouter.post('/', signupValidation, (req, res) => {
                         })
                         return;
                     }
-        
-                    res.cookie('token', token);
-                    res.status(201).json({
-                        status: 'success',
-                        data: {
-                            userId: userUUID,
-                            firstName: dataSentToDb.first_name,
-                            last_name: dataSentToDb.last_name,
-                            email: dataSentToDb.email,
-                            token
-                        }
+
+                    // send email
+                    confirmationUrl = process.env.EMAIL_COMFIRMATION_URL + userUUID;
+                    const emailData = {
+                        from: process.env.HOST_EMAIL,
+                        to: dataSentToDb.email,
+                        subject: "Welcome to ELearning",
+                        htmlTemplate: `
+                        <div style="background-color: whitesmoke; width: 100%; border: 2px solid grey;">
+                            <div style="margin: 0 6px;">
+                                <h1 style="color:blue; font-weight: bold;"> Welcome ${dataSentToDb.first_name}</h1>
+                                <P> Please <a href=${confirmationUrl} style="color:red; text-decoration: none;">Click HERE</a> to comfirm your account.</P>
+                                <p>Regards</p>
+                                <p>ELearning Team.</p>
+                            </div>
+                        </div>
+                        `
+                    }
+
+                    const returnedData = {
+                        userId: userUUID,
+                        firstName: dataSentToDb.first_name,
+                        last_name: dataSentToDb.last_name,
+                        email: dataSentToDb.email,
+                        token
+                    };
+
+                    sendEmail(emailData)
+                    .then(() => {
+                        returnedData.emailConfirmationStatus= 'success';
+                        res.cookie('token', token);
+                        res.status(201).json({
+                            status: 'success',
+                            data: returnedData
+                        });
                     })
-                    return;
+                    .catch((e) => {
+                        returnedData.emailConfirmationStatus= 'error';
+                        res.cookie('token', token);
+                        res.status(201).json({
+                        status: 'success',
+                        data: returnedData
+                        });
+                    });
+        
+                    
                     
                 });
                 

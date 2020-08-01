@@ -1,6 +1,6 @@
 const express = require('express');
 const cookieparser = require('cookie-parser');
-const helmet = require('helmet')
+const helmet = require('helmet');
 const rateLimit = require("express-rate-limit");
 const hpp = require('hpp');
 require('dotenv').config();
@@ -8,6 +8,7 @@ require('dotenv').config();
 const signuRouter =  require('./src/controllers/signup');
 const loginRouter =  require('./src/controllers/login');
 const logout = require('./src/controllers/logout');
+const comfirmEmailController = require('./src/controllers/GET/confirmEmail');
 const baseUrl = process.env.BASE_URL;
 
 const limiter = rateLimit({
@@ -36,7 +37,7 @@ app.use(hpp());
 app.use(baseUrl + '/signup', signuRouter);
 app.use(baseUrl + '/login', loginRouter);
 app.use(baseUrl + '/logout', logout);
-
+app.use(baseUrl + '/comfirmEmail', comfirmEmailController);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
