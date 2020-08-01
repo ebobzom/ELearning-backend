@@ -2,14 +2,16 @@ const express = require('express');
 const cookieparser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require("express-rate-limit");
+const morgan = require('morgan');
 const hpp = require('hpp');
 require('dotenv').config();
 
-const signuRouter =  require('./src/controllers/signup');
+const signuRouter =  require('./src/controllers/CREATE/signup');
 const loginRouter =  require('./src/controllers/login');
 const logout = require('./src/controllers/logout');
 const comfirmEmailController = require('./src/controllers/GET/confirmEmail');
 const forgotPasswordRouter = require('./src/controllers/CREATE/forgotPassword');
+const resetPasswordRouter = require('./src/controllers/UPDATE/resetPassword');
 
 const baseUrl = process.env.BASE_URL;
 
@@ -31,6 +33,7 @@ app.use(cookieparser({
     httpOnly: true,
     expires: expiryDate
 }));
+app.use(morgan('combined'));
 app.use(limiter);
 app.use(hpp());
 
@@ -40,6 +43,17 @@ app.use(baseUrl + '/login', loginRouter);
 app.use(baseUrl + '/logout', logout);
 app.use(baseUrl + '/comfirmEmail', comfirmEmailController);
 app.use(baseUrl, forgotPasswordRouter);
+app.use(baseUrl, resetPasswordRouter);
+
+// error handler
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.status(500).json({
+        status: 'error',
+        msg: 'an error ocurred'
+    });
+    return;
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

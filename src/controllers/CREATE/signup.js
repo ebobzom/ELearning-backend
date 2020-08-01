@@ -3,11 +3,13 @@ const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const sendEmail = require('../utils/sendEmail');
-const db = require('../config/db');
+const sendEmail = require('../../utils/sendEmail');
+const db = require('../../config/db');
+const logError = require('../../utils/logErrors');
+
 const signuRouter = express.Router();
 
-const signupValidation = require('../validation/CREATE/signup-validation');
+const signupValidation = require('../../validation/CREATE/signup-validation');
 
 signuRouter.post('/', signupValidation, (req, res) => {
 
@@ -15,7 +17,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
     if(!errors.isEmpty()){
         res.status(401).json({
             status: 'error',
-            error: errors.array()
+            msg: errors.array()
         });
         return;
     }
@@ -34,7 +36,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
     if(password != confirmPassword){
         res.status(400).json({
             status: 'error',
-            error: 'password does not match'
+            msg: 'password does not match'
         });
         return;
     }
@@ -51,9 +53,10 @@ signuRouter.post('/', signupValidation, (req, res) => {
     const checkUser = `SELECT email FROM users WHERE email='${dataSentToDb.email}'`
     db.query(checkUser,(queryErr, result) =>{
         if(queryErr){
+            logError(queryErr);
             res.status(500).json({
                 status: 'error',
-                error: 'An error occurred, please contact admin'
+                msg: 'An error occurred, please contact admin'
             });
             return;
         }
@@ -61,7 +64,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
         if(result.length > 0){
             res.status(401).json({
                 status: 'error',
-                error: 'user already exists please login'
+                msg: 'user already exists please login'
             });
             return;
         }
@@ -69,9 +72,10 @@ signuRouter.post('/', signupValidation, (req, res) => {
         // hash password
         bcrypt.hash(dataSentToDb.password, 10, (err, hash) => {
             if(err){
+                logError(err);
                 return res.status(500).json({
                     status: 'error',
-                    error: 'An error occurred, please contact admin'
+                    msg: 'An error occurred, please contact admin'
                 });
             }  
 
@@ -86,9 +90,10 @@ signuRouter.post('/', signupValidation, (req, res) => {
             db.query(queryString, dataSentToDb, (dbErr) => {
 
                 if(dbErr){
+                    logError(dbErr);
                     res.status(500).json({
                         status: 'error',
-                        error: 'An error occurred, please contact admin'
+                        msg: 'An error occurred, please contact admin'
                     });
                     
                     return;
@@ -103,9 +108,10 @@ signuRouter.post('/', signupValidation, (req, res) => {
 
                 jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '5h', }, (jwtErr, token) => {
                     if(jwtErr){
+                        logError(jwtErr);
                         res.status(500).json({
                             status: 'error',
-                            error: 'An error occurred, please contact admin'
+                            msg: 'An error occurred, please contact admin'
                         })
                         return;
                     }
@@ -146,6 +152,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
                         });
                     })
                     .catch((e) => {
+                        logError(e);
                         returnedData.emailConfirmationStatus= 'error';
                         res.cookie('token', token);
                         res.status(201).json({
@@ -153,8 +160,6 @@ signuRouter.post('/', signupValidation, (req, res) => {
                         data: returnedData
                         });
                     });
-        
-                    
                     
                 });
                 

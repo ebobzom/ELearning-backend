@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const db = require('../config/db');
+const logError = require('../utils/logErrors');
 const loginRouter = express.Router();
 
 const loginValidation = require('../validation/login-validation');
@@ -18,7 +19,7 @@ loginRouter.post('/', loginValidation, (req, res) => {
     if(!errors.isEmpty()){
         res.status(401).json({
             status: 'error',
-            error: errors.array()
+            msg: errors.array()
         });
         return;
     }
@@ -27,9 +28,10 @@ loginRouter.post('/', loginValidation, (req, res) => {
     const dbQuery = `SELECT user_id, email, password, first_name, last_name, is_admin FROM users WHERE email='${email}'`;
     db.query(dbQuery, (dbErr, result) => {
         if(dbErr){
+            logError(dbErr);
             res.status(501).json({
                 status: 'error',
-                error: dbErr.message
+                msg: dbErr.message
             });
             return;
         }
@@ -38,7 +40,7 @@ loginRouter.post('/', loginValidation, (req, res) => {
         if(result.length ===  0){
             res.status(401).json({
                 status: 'error',
-                error: 'incorrect email or password'
+                msg: 'incorrect email or password'
             });
             return;
         }
@@ -47,9 +49,10 @@ loginRouter.post('/', loginValidation, (req, res) => {
         const hashedPasswordFromDb = result[0].password;
         bcrypt.compare(password, hashedPasswordFromDb, (passwordErr, valid) => {
             if(passwordErr){
+                logError(passwordErr);
                 res.status(500).json({
                     status: 'error',
-                    error: 'incorrect email or password'
+                    msg: 'incorrect email or password'
                 });
                 return;
             }
@@ -62,9 +65,10 @@ loginRouter.post('/', loginValidation, (req, res) => {
 
                 jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '5h' }, (err, tokenValue) => {
                     if(err){
+                        logError(err);
                         res.status(501).json({
                             status: 'error',
-                            error: 'An error occurred please contact admin'
+                            msg: 'An error occurred please contact admin'
                         });
                         return;
                     }
@@ -89,7 +93,7 @@ loginRouter.post('/', loginValidation, (req, res) => {
             // for invalid password
             res.status(501).json({
                 status: 'error',
-                error: 'incorrect email or password'
+                msg: 'incorrect email or password'
             });
             return;
         });

@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('../../config/db');
+const logError = require('./../../utils/logErrors');
 const confirmEmailController = express.Router();
 
 confirmEmailController.get('/:userId', (req, res) => {
@@ -8,9 +9,10 @@ confirmEmailController.get('/:userId', (req, res) => {
      const confirmEmailQuery = `UPDATE users SET email_confirmed='${1}' WHERE user_id = '${userId}'`;
      db.query(confirmEmailQuery,(err, result) => {
         if(err){
+            logError(err);
             res.status(500).json({
                 status: 'error',
-                error: "please click confirm email link again"
+                msg: "please click confirm email link again"
             });
             return;
         }
@@ -20,7 +22,7 @@ confirmEmailController.get('/:userId', (req, res) => {
         }
         res.status(400).json({
             status: 'error',
-            error: "invalid user detail"
+            msg: "invalid user detail"
         });
         return;
      });

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const forgotPasswordValidation = require('../../validation/CREATE/forgot-password-validation');
 const sendEmail = require('../../utils/sendEmail');
+const logError = require('../../utils/logErrors');
 
 const forgotPasswordRouter = express.Router();
 
@@ -12,18 +13,19 @@ forgotPasswordRouter.post('/forgotPassword', forgotPasswordValidation, (req, res
     if(!errors.isEmpty()){
         res.status(401).json({
             status: 'error',
-            error: errors.array()
+            msg: errors.array()
         });
         return;
     }
     const email = req.body.email;
 
     // sign a token
-    jwt.sign({ expiresIn: '15min'}, process.env.FORGOT_PASSWORD_TOKEN, { expiresIn: '15m'}, (err, token) => {
+    jwt.sign({ email: email }, process.env.FORGOT_PASSWORD_TOKEN, { expiresIn: '15m'}, (err, token) => {
         if(err){
+            logError(err);
             res.status(500).json({
                 status: 'error',
-                error: 'An error occurred, please contact admin'
+                msg: 'An error occurred, please contact admin'
             })
             return;
         }
@@ -55,6 +57,7 @@ forgotPasswordRouter.post('/forgotPassword', forgotPasswordValidation, (req, res
             return;
         })
         .catch(e => {
+            logError(e);
             res.status(500).json({
                 status: 'error',
                 data: 'email not sent'
