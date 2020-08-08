@@ -60,7 +60,8 @@ loginRouter.post('/', loginValidation, (req, res) => {
 
                 const payload = {
                     userId: result[0].user_id,
-                    isAdmin: result[0].is_admin
+                    isAdmin: result[0].is_admin,
+                    isSubAdmin: result[0].is_sub_admin
                 };
 
                 jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '5h' }, (err, tokenValue) => {
