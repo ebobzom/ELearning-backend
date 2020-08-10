@@ -14,6 +14,7 @@ const comfirmEmailController = require('./src/controllers/GET/confirmEmail');
 const forgotPasswordRouter = require('./src/controllers/CREATE/forgotPassword');
 const resetPasswordRouter = require('./src/controllers/UPDATE/resetPassword');
 const userImageUpload = require('./src/controllers/CREATE/uploadImage');
+const changePasswordRouter = require('./src/controllers/UPDATE/changePassword');
 
 const baseUrl = process.env.BASE_URL;
 
@@ -48,6 +49,7 @@ app.use(baseUrl + '/comfirmEmail', comfirmEmailController);
 app.use(baseUrl, forgotPasswordRouter);
 app.use(baseUrl, resetPasswordRouter);
 app.use(baseUrl, userImageUpload);
+app.use(baseUrl, changePasswordRouter);
 
 // error handler
 app.use((err, req, res, next) => {
