@@ -15,9 +15,14 @@ const forgotPasswordRouter = require('./src/controllers/CREATE/forgotPassword');
 const resetPasswordRouter = require('./src/controllers/UPDATE/resetPassword');
 const userImageUpload = require('./src/controllers/CREATE/uploadImage');
 const changePasswordRouter = require('./src/controllers/UPDATE/changePassword');
+
+// teacher
 const addTeacherRouter = require('./src/controllers/CREATE/addTeacher');
 const updateTeacherRouter = require('./src/controllers/UPDATE/updateTeacher');
 const deleteTeacherRouter = require('./src/controllers/DELETE/deleteTeacher');
+
+// courses
+const addCoursesRouter = require('./src/controllers/CREATE/addCourse');
 
 const baseUrl = process.env.BASE_URL;
 
@@ -53,9 +58,15 @@ app.use(baseUrl, forgotPasswordRouter);
 app.use(baseUrl, resetPasswordRouter);
 app.use(baseUrl, userImageUpload);
 app.use(baseUrl, changePasswordRouter);
+
+// teacher
 app.use(baseUrl, addTeacherRouter);
 app.use(baseUrl, updateTeacherRouter);
 app.use(baseUrl, deleteTeacherRouter);
+
+// courses
+app.use(baseUrl, addCoursesRouter);
+
 
 // error handler
 app.use((err, req, res, next) => {
