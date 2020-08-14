@@ -1,11 +1,11 @@
-const addCourseRouter = require('express').Router();
+const addScheduleRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const addCourseValidation = require('../../validation/CREATE/course-addition-validation');
+const addScheduleValidation = require('../../validation/CREATE/create-schedule-validation.js');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
 
-addCourseRouter.post('/course', addCourseValidation, verifyToken, (req, res) => {
+addScheduleRouter.post('/schedule', addScheduleValidation, verifyToken, (req, res) => {
     
     const errors = validationResult(req);
 
@@ -17,36 +17,36 @@ addCourseRouter.post('/course', addCourseValidation, verifyToken, (req, res) => 
     }
 
     const {
-        courseTitle: course_title, subject, description, courseUrl: course_url, courseDuration: course_duration,
-        courseOwnerId: course_owner_id, teacherId: teacher_id
+        courseTitle: course_title, description, scheduleDate: schedule_date,
+        courseOwnerId: course_owner_id, teacherId: teacher_id, startTime: start_time
     } = req.body;
 
     const postData = {
-        course_title, subject, description, course_url, course_duration,
-        course_owner_id, teacher_id
+        course_title, description, schedule_date,
+        course_owner_id, teacher_id, start_time
     };
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
-        const insertQuery = `INSERT INTO courses SET ?`;
+        const insertQuery = `INSERT INTO schedule SET ?`;
 
         db.query(insertQuery, postData, (err, result) => {
             if(err){
                 logError(err);
                 return res.status(400).json({
                     status: 'error',
-                    msg: 'course insertion error, cross check your parameters'
+                    msg: 'schedule insertion error, cross check your parameters'
                 });
             }
 
             if(result.affectedRows > 0){
                 return res.status(200).json({
                     status: 'success',
-                    data: 'course added succesfull'
+                    data: 'schedule added succesfull'
                 });
             }else{
                 return res.status(500).json({
                     status: 'error',
-                    msg: 'course insertion error'
+                    msg: 'schedule insertion error'
                 });
             }
         });
@@ -58,4 +58,4 @@ addCourseRouter.post('/course', addCourseValidation, verifyToken, (req, res) => 
     }
 
 });
-module.exports = addCourseRouter;
+module.exports = addScheduleRouter;

@@ -26,6 +26,9 @@ const addCoursesRouter = require('./src/controllers/CREATE/addCourse');
 const updateCourseRouter = require('./src/controllers/UPDATE/updateCourse');
 const deleteCourseRouter = require('./src/controllers/DELETE/deleteCourse');
 
+// schedule
+const addScheduleRouter = require('./src/controllers/CREATE/schedule');
+
 
 const baseUrl = process.env.BASE_URL;
 
@@ -71,6 +74,10 @@ app.use(baseUrl, deleteTeacherRouter);
 app.use(baseUrl, addCoursesRouter);
 app.use(baseUrl, updateCourseRouter);
 app.use(baseUrl, deleteCourseRouter);
+
+// schedule 
+app.use(baseUrl, addScheduleRouter);
+
 
 // error handler
 app.use((err, req, res, next) => {
