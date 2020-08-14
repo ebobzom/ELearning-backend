@@ -24,6 +24,9 @@ const deleteTeacherRouter = require('./src/controllers/DELETE/deleteTeacher');
 // courses
 const addCoursesRouter = require('./src/controllers/CREATE/addCourse');
 const updateCourseRouter = require('./src/controllers/UPDATE/updateCourse');
+const deleteCourseRouter = require('./src/controllers/DELETE/deleteCourse');
+
+
 const baseUrl = process.env.BASE_URL;
 
 const limiter = rateLimit({
@@ -67,6 +70,7 @@ app.use(baseUrl, deleteTeacherRouter);
 // courses
 app.use(baseUrl, addCoursesRouter);
 app.use(baseUrl, updateCourseRouter);
+app.use(baseUrl, deleteCourseRouter);
 
 // error handler
 app.use((err, req, res, next) => {
