@@ -17,6 +17,7 @@ const userImageUpload = require('./src/controllers/CREATE/uploadImage');
 const changePasswordRouter = require('./src/controllers/UPDATE/changePassword');
 const addTeacherRouter = require('./src/controllers/CREATE/addTeacher');
 const updateTeacherRouter = require('./src/controllers/UPDATE/updateTeacher');
+const deleteTeacherRouter = require('./src/controllers/DELETE/deleteTeacher');
 
 const baseUrl = process.env.BASE_URL;
 
@@ -54,6 +55,7 @@ app.use(baseUrl, userImageUpload);
 app.use(baseUrl, changePasswordRouter);
 app.use(baseUrl, addTeacherRouter);
 app.use(baseUrl, updateTeacherRouter);
+app.use(baseUrl, deleteTeacherRouter);
 
 // error handler
 app.use((err, req, res, next) => {
