@@ -25,7 +25,7 @@ loginRouter.post('/', loginValidation, (req, res) => {
     }
 
     // check if email and password are valid
-    const dbQuery = `SELECT user_id, email, password, first_name, last_name, is_admin FROM users WHERE email='${email}'`;
+    const dbQuery = `SELECT user_id, email, password, first_name, last_name, is_admin, is_sub_admin FROM users WHERE email='${email}'`;
     db.query(dbQuery, (dbErr, result) => {
         if(dbErr){
             logError(dbErr);

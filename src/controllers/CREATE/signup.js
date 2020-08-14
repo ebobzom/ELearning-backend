@@ -28,9 +28,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
         lastName: last_name,
         email,
         password,
-        confirmPassword,
-        isAdmin: is_admin 
-
+        confirmPassword
     } = req.body;
 
     if(password != confirmPassword){
@@ -103,6 +101,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
 
                 const payload = {
                     userId: userUUID,
+                    isSubAdmin: 0,
                     isAdmin: dataSentToDb.is_admin
                 }
 
