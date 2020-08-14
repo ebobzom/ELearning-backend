@@ -1,10 +1,10 @@
-const addTeacherRouter = require('express').Router();
+const updateTeacherRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const addTeacherValidation = require('../../validation/CREATE/add-teacher-validation');
+const updateTeacherValidation = require('../../validation/UPDATE/update-teacher.validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
-addTeacherRouter.post('/teacher', addTeacherValidation, verifyToken, (req, res) => {
+updateTeacherRouter.put('/teacher', updateTeacherValidation, verifyToken, (req, res) => {
     
     const errors = validationResult(req);
 
@@ -16,30 +16,30 @@ addTeacherRouter.post('/teacher', addTeacherValidation, verifyToken, (req, res) 
     }
 
     const {
-        fullName, description
+        fullName, description, teacherId
     } = req.body;
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
-        const insertQuery = `INSERT INTO teachers(full_name, description) VALUES('${fullName}', '${description}')`;
+        const insertQuery = `UPDATE teachers SET full_name='${fullName}', description='${description}' WHERE teacher_id='${teacherId}'`;
 
         db.query(insertQuery, (err, result) => {
             if(err){
                 logError(err);
                 return res.status(400).json({
                     status: 'error',
-                    msg: 'insert error'
+                    msg: 'update error, not all values are provided'
                 });
             }
 
             if(result.affectedRows > 0){
                 return res.status(200).json({
                     status: 'success',
-                    data: 'insert succesfull'
+                    data: 'update succesfull'
                 });
             }else{
                 return res.status(500).json({
                     status: 'error',
-                    msg: 'insert error'
+                    msg: 'update error'
                 });
             }
         });
@@ -51,4 +51,4 @@ addTeacherRouter.post('/teacher', addTeacherValidation, verifyToken, (req, res) 
     }
 
 });
-module.exports = addTeacherRouter;
+module.exports = updateTeacherRouter;
