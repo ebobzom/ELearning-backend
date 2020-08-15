@@ -36,6 +36,9 @@ const classRequestRouter = require('./src/controllers/CREATE/classRequest');
 const updateClassRequestRouter = require('./src/controllers/UPDATE/updateClassRequest');
 const deleteClassRequestRouter = require('./src/controllers/DELETE/deleteClassRequest');
 
+// class review
+const classReviewRouter = require('./src/controllers/CREATE/createReview');
+
 
 const baseUrl = process.env.BASE_URL;
 
@@ -92,6 +95,8 @@ app.use(baseUrl, classRequestRouter);
 app.use(baseUrl, updateClassRequestRouter);
 app.use(baseUrl, deleteClassRequestRouter);
 
+// course review 
+app.use(baseUrl, classReviewRouter);
 
 // error handler
 app.use((err, req, res, next) => {
