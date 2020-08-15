@@ -39,6 +39,7 @@ const deleteClassRequestRouter = require('./src/controllers/DELETE/deleteClassRe
 // class review
 const classReviewRouter = require('./src/controllers/CREATE/createReview');
 const updateClassReviewRouter = require('./src/controllers/UPDATE/updatedReview');
+const deleteClassReviewRouter = require('./src/controllers/DELETE/deleteReview');
 
 
 const baseUrl = process.env.BASE_URL;
@@ -98,8 +99,8 @@ app.use(baseUrl, deleteClassRequestRouter);
 
 // course review 
 app.use(baseUrl, classReviewRouter);
-app.use(baseUrl, updateClassReviewRouter)
-
+app.use(baseUrl, updateClassReviewRouter); 
+app.use(baseUrl, deleteClassReviewRouter);
 
 // error handler
 app.use((err, req, res, next) => {
