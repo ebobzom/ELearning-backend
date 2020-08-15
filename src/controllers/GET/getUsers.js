@@ -11,7 +11,6 @@ getCourseRouter.get('/courses/:amount', verifyTokenForFetchingCourses, (req, res
         course_duration, full_name as teacher, t.description teacher_info, paid_course FROM courses AS c, teachers AS t WHERE paid_course = 0`; 
         
         if(typeof Number(amount) === 'number'){
-            console.log('entered')
             query += ` LIMIT ${amount}`;
         }
         

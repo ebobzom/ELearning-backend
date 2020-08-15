@@ -37,11 +37,14 @@ addCourseRouter.post('/course', addCourseValidation, verifyToken, (req, res) => 
                     msg: 'course insertion error, cross check your parameters'
                 });
             }
-
+            console.log(result)
             if(result.affectedRows > 0){
                 return res.status(200).json({
                     status: 'success',
-                    data: 'course added succesfull'
+                    data: {
+                        courseTitle: course_title, subject, description, courseUrl: course_url, courseDuration: course_duration,
+                        ownerEmail: owner_email, teacherId: teacher_id, courseId: result.insertId
+                    } 
                 });
             }else{
                 return res.status(500).json({

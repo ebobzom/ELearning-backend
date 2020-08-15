@@ -24,7 +24,7 @@ updateCourseRouter.put('/course', updateCourseValidation, verifyToken, (req, res
         course_title, subject, description, course_url, course_duration,
         owner_email, teacher_id, course_id
     ];
-    console.log(postData)
+
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
         const query = `UPDATE courses SET course_title = ?, subject = ?, description = ?, course_url = ?,

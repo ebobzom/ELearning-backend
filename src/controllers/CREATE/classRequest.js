@@ -41,7 +41,9 @@ classRequestRouter.post('/request', classRequestValidation, verifyToken, (req, r
             if(result.affectedRows > 0){
                 return res.status(200).json({
                     status: 'success',
-                    data: 'class request made succesfully'
+                    data: {
+                        subject, topic, userId: user_id, email, requestId: result.insertId
+                    }
                 });
             }else{
                 return res.status(500).json({

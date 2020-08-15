@@ -39,7 +39,9 @@ classReviewRouter.post('/review', classRequestValidation, verifyToken, (req, res
         if(result.affectedRows > 0){
             return res.status(200).json({
                 status: 'success',
-                data: 'class review made succesfully'
+                data: {
+                    comment, userId: user_id, courseId: course_id, reviewId: result.insertId
+                }
             });
         }else{
             return res.status(500).json({

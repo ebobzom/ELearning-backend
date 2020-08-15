@@ -41,7 +41,10 @@ addScheduleRouter.post('/schedule', addScheduleValidation, verifyToken, (req, re
             if(result.affectedRows > 0){
                 return res.status(200).json({
                     status: 'success',
-                    data: 'schedule added succesfull'
+                    data: {
+                        courseTitle: course_title, description, scheduleDate: schedule_date,
+                        courseOwberId: course_owner_id, teacherId: teacher_id, startTime: start_time, sheduleId: result.insertId
+                    }
                 });
             }else{
                 return res.status(500).json({

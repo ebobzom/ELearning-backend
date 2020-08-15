@@ -34,7 +34,9 @@ addTeacherRouter.post('/teacher', addTeacherValidation, verifyToken, (req, res) 
             if(result.affectedRows > 0){
                 return res.status(200).json({
                     status: 'success',
-                    data: 'insert succesfull'
+                    data: {
+                        fullName, description, teacherId: result.insertId
+                    }
                 });
             }else{
                 return res.status(500).json({
