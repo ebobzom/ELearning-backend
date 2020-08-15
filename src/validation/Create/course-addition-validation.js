@@ -6,6 +6,6 @@ module.exports =  [
     check('description').isString(),
     check('courseUrl').isString(),
     check('courseDuration').isString(),
-    check('courseOwnerId').isString(),
+    check('ownerEmail').isEmail(),
     check('teacherId').isInt()
 ]

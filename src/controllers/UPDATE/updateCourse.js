@@ -17,19 +17,20 @@ updateCourseRouter.put('/course', updateCourseValidation, verifyToken, (req, res
 
     const {
         courseTitle: course_title, subject, description, courseUrl: course_url, courseDuration: course_duration,
-        courseOwnerId: course_owner_id, teacherId: teacher_id, courseId: course_id
+        ownerEmail: owner_email, teacherId: teacher_id, courseId: course_id
     } = req.body;
 
     const postData = [
         course_title, subject, description, course_url, course_duration,
-        course_owner_id, teacher_id, course_id
+        owner_email, teacher_id, course_id
     ];
+    console.log(postData)
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
-        const insertQuery = `UPDATE courses SET course_title = ?, subject = ?, description = ?, course_url = ?,
-        course_duration = ?, course_owner_id = ?, teacher_id = ? WHERE course_id = ?`;
+        const query = `UPDATE courses SET course_title = ?, subject = ?, description = ?, course_url = ?,
+        course_duration = ?, owner_email = ?, teacher_id = ? WHERE course_id = ?`;
 
-        db.query(insertQuery, postData, (err, result) => {
+        db.query(query, postData, (err, result) => {
             if(err){
                 logError(err);
                 return res.status(400).json({

@@ -43,8 +43,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
         first_name,
         last_name,
         password,
-        email,
-        is_admin: Number(is_admin) || 0
+        email
     };
 
     // check if user exists
@@ -101,6 +100,7 @@ signuRouter.post('/', signupValidation, (req, res) => {
 
                 const payload = {
                     userId: userUUID,
+                    email,
                     isSubAdmin: 0,
                     isAdmin: dataSentToDb.is_admin
                 }

@@ -18,12 +18,12 @@ addCourseRouter.post('/course', addCourseValidation, verifyToken, (req, res) => 
 
     const {
         courseTitle: course_title, subject, description, courseUrl: course_url, courseDuration: course_duration,
-        courseOwnerId: course_owner_id, teacherId: teacher_id
+        ownerEmail: owner_email, teacherId: teacher_id, paidCourse: paid_course
     } = req.body;
 
     const postData = {
         course_title, subject, description, course_url, course_duration,
-        course_owner_id, teacher_id
+        owner_email, teacher_id, paid_course
     };
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){

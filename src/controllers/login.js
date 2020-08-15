@@ -61,6 +61,7 @@ loginRouter.post('/', loginValidation, (req, res) => {
                 const payload = {
                     userId: result[0].user_id,
                     isAdmin: result[0].is_admin,
+                    email: email,
                     isSubAdmin: result[0].is_sub_admin
                 };
 

@@ -19,11 +19,11 @@ classRequestRouter.post('/request', classRequestValidation, verifyToken, (req, r
     // TODO: add logic to allow only paid to have acces to request a course
 
     const {
-        subject, topic, userId: user_id
+        subject, topic, userId: user_id, email
     } = req.body;
 
     const postData = {
-        subject, topic, user_id
+        subject, topic, user_id, email
     };
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
