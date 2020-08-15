@@ -41,6 +41,9 @@ const classReviewRouter = require('./src/controllers/CREATE/createReview');
 const updateClassReviewRouter = require('./src/controllers/UPDATE/updatedReview');
 const deleteClassReviewRouter = require('./src/controllers/DELETE/deleteReview');
 
+// role update
+const updateUserRole = require('./src/controllers/UPDATE/updateRole');
+
 
 const baseUrl = process.env.BASE_URL;
 
@@ -101,6 +104,9 @@ app.use(baseUrl, deleteClassRequestRouter);
 app.use(baseUrl, classReviewRouter);
 app.use(baseUrl, updateClassReviewRouter); 
 app.use(baseUrl, deleteClassReviewRouter);
+
+// admin update user role
+app.use(baseUrl, updateUserRole);
 
 // error handler
 app.use((err, req, res, next) => {
