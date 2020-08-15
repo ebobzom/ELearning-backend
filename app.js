@@ -34,6 +34,7 @@ const deleteScheduleRouter = require('./src/controllers/DELETE/deteteSchedule');
 // class request
 const classRequestRouter = require('./src/controllers/CREATE/classRequest');
 const updateClassRequestRouter = require('./src/controllers/UPDATE/updateClassRequest');
+const deleteClassRequestRouter = require('./src/controllers/DELETE/deleteClassRequest');
 
 
 const baseUrl = process.env.BASE_URL;
@@ -89,6 +90,7 @@ app.use(baseUrl, deleteScheduleRouter);
 // class request
 app.use(baseUrl, classRequestRouter); 
 app.use(baseUrl, updateClassRequestRouter);
+app.use(baseUrl, deleteClassRequestRouter);
 
 
 // error handler
