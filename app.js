@@ -28,6 +28,7 @@ const updateCourseRouter = require('./src/controllers/UPDATE/updateCourse');
 const deleteCourseRouter = require('./src/controllers/DELETE/deleteCourse');
 
 // schedule
+const getOneScheduleRouter = require('./src/controllers/GET/getOneSchedule');
 const getAllScheduleRouter = require('./src/controllers/GET/getAllSchedule');
 const addScheduleRouter = require('./src/controllers/CREATE/schedule');
 const updateScheduleRouter = require('./src/controllers/UPDATE/updateSchedule');
@@ -97,6 +98,7 @@ app.use(baseUrl, deleteCourseRouter);
 
 // schedule 
 app.use(baseUrl, getAllScheduleRouter);
+app.use(baseUrl, getOneScheduleRouter);
 app.use(baseUrl, addScheduleRouter);
 app.use(baseUrl, updateScheduleRouter);
 app.use(baseUrl, deleteScheduleRouter);
