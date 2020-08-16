@@ -22,7 +22,7 @@ const updateTeacherRouter = require('./src/controllers/UPDATE/updateTeacher');
 const deleteTeacherRouter = require('./src/controllers/DELETE/deleteTeacher');
 
 // courses
-const getCourses = require('./src/controllers/GET/getUsers');
+const getCourses = require('./src/controllers/GET/getCourses');
 const addCoursesRouter = require('./src/controllers/CREATE/addCourse');
 const updateCourseRouter = require('./src/controllers/UPDATE/updateCourse');
 const deleteCourseRouter = require('./src/controllers/DELETE/deleteCourse');
@@ -38,6 +38,7 @@ const updateClassRequestRouter = require('./src/controllers/UPDATE/updateClassRe
 const deleteClassRequestRouter = require('./src/controllers/DELETE/deleteClassRequest');
 
 // class review
+const getCourseReviewsRouter = require('./src/controllers/GET/getCourseReviews');
 const classReviewRouter = require('./src/controllers/CREATE/createReview');
 const updateClassReviewRouter = require('./src/controllers/UPDATE/updatedReview');
 const deleteClassReviewRouter = require('./src/controllers/DELETE/deleteReview');
@@ -104,6 +105,7 @@ app.use(baseUrl, updateClassRequestRouter);
 app.use(baseUrl, deleteClassRequestRouter);
 
 // course review 
+app.use(baseUrl, getCourseReviewsRouter);
 app.use(baseUrl, classReviewRouter);
 app.use(baseUrl, updateClassReviewRouter); 
 app.use(baseUrl, deleteClassReviewRouter);

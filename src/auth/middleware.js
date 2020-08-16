@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 exports.verifyToken = function(req, res, next){
-    const token = req.body.token || req.cookies.token;
+    const token = req.body.token || req.cookies.token || req.headers.token;
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
         if(err){
@@ -24,10 +24,11 @@ exports.verifyToken = function(req, res, next){
 
 
 exports.verifyTokenForFetchingCourses = function(req, res, next){
-    const token = req.body.token || req.cookies.token;
+    const token = req.body.token || req.cookies.token || req.headers.token;
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
         if(err){
+            console.log(err.message)
             res.registeredUser = false;
             next();
         }
