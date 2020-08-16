@@ -3,6 +3,7 @@ const db = require('../../config/db');
 const { validationResult } = require('express-validator');
 const getOneScheduleValidation = require('../../validation/GET/get-one-schedule-validation');
 const logError = require('../../utils/logErrors');
+
 getOneScheduleRouter.get('/schedule/:email', getOneScheduleValidation, (req, res) => {
     const errors = validationResult(req);
 

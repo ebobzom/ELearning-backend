@@ -19,14 +19,14 @@ classRequestRouter.post('/request', classRequestValidation, verifyToken, (req, r
     // TODO: add logic to allow only paid to have acces to request a course
 
     const {
-        subject, topic, userId: user_id, email
+        subject, topic, userId: user_id, email, studentClass: student_class
     } = req.body;
 
     const postData = {
-        subject, topic, user_id, email
+        subject, topic, user_id, email, student_class
     };
 
-    if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
+    if(res.payload.userId){
         const insertQuery = `INSERT INTO class_request SET ?`;
 
         db.query(insertQuery, postData, (err, result) => {
