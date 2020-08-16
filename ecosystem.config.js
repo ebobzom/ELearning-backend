@@ -4,9 +4,6 @@ module.exports = {
     instances : "max",
     exec_mode : "cluster",
     watch: '.'
-  }, {
-    script: './service-worker/',
-    watch: ['./service-worker']
   }],
 
   deploy : {
