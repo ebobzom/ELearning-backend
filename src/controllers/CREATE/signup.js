@@ -9,7 +9,7 @@ const logError = require('../../utils/logErrors');
 
 const signuRouter = express.Router();
 
-const signupValidation = require('../../validation/CREATE/signup-validation');
+const signupValidation = require('./../../validation/CREATE/signup-validation');
 
 signuRouter.post('/', signupValidation, (req, res) => {
 
