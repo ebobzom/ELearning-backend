@@ -96,70 +96,46 @@ signuRouter.post('/', signupValidation, (req, res) => {
                     return;
                 }
 
-                // generate token and respond
-
-                const payload = {
-                    userId: userUUID,
-                    email,
-                    isSubAdmin: 0,
-                    isAdmin: dataSentToDb.is_admin
+                // send email
+                confirmationUrl = process.env.EMAIL_COMFIRMATION_URL + userUUID;
+                const emailData = {
+                    from: process.env.HOST_EMAIL,
+                    to: dataSentToDb.email,
+                    subject: "Welcome to ELearning",
+                    htmlTemplate: `
+                    <div>
+                        <div style="margin: 0 6px;">
+                            <h1 style="color:blue; font-weight: bold;"> Welcome ${dataSentToDb.first_name}</h1>
+                            <P> Please <a href=${confirmationUrl} style="color:red; text-decoration: none;">Click HERE</a> to comfirm your account.</P>
+                            <p>Regards</p>
+                            <p>ELearning Team.</p>
+                        </div>
+                    </div>
+                    `
                 }
 
-                jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '5h', }, (jwtErr, token) => {
-                    if(jwtErr){
-                        logError(jwtErr);
-                        res.status(500).json({
-                            status: 'error',
-                            msg: 'An error occurred, please contact admin'
-                        })
-                        return;
-                    }
+                const returnedData = {
+                    userId: userUUID,
+                    firstName: dataSentToDb.first_name,
+                    last_name: dataSentToDb.last_name,
+                    email: dataSentToDb.email
+                };
 
-                    // send email
-                    confirmationUrl = process.env.EMAIL_COMFIRMATION_URL + userUUID;
-                    const emailData = {
-                        from: process.env.HOST_EMAIL,
-                        to: dataSentToDb.email,
-                        subject: "Welcome to ELearning",
-                        htmlTemplate: `
-                        <div>
-                            <div style="margin: 0 6px;">
-                                <h1 style="color:blue; font-weight: bold;"> Welcome ${dataSentToDb.first_name}</h1>
-                                <P> Please <a href=${confirmationUrl} style="color:red; text-decoration: none;">Click HERE</a> to comfirm your account.</P>
-                                <p>Regards</p>
-                                <p>ELearning Team.</p>
-                            </div>
-                        </div>
-                        `
-                    }
-
-                    const returnedData = {
-                        userId: userUUID,
-                        firstName: dataSentToDb.first_name,
-                        last_name: dataSentToDb.last_name,
-                        email: dataSentToDb.email,
-                        token
-                    };
-
-                    sendEmail(emailData)
-                    .then(() => {
-                        returnedData.emailConfirmationStatus= 'success';
-                        res.cookie('token', token);
-                        res.status(201).json({
-                            status: 'success',
-                            data: returnedData
-                        });
-                    })
-                    .catch((e) => {
-                        logError(e);
-                        returnedData.emailConfirmationStatus= 'error';
-                        res.cookie('token', token);
-                        res.status(201).json({
+                sendEmail(emailData)
+                .then(() => {
+                    returnedData.emailConfirmationStatus= 'success';
+                    res.status(201).json({
                         status: 'success',
                         data: returnedData
-                        });
                     });
-                    
+                })
+                .catch((e) => {
+                    logError(e);
+                    returnedData.emailConfirmationStatus= 'error';
+                    res.status(201).json({
+                    status: 'success',
+                    data: returnedData
+                    });
                 });
                 
                 return;
