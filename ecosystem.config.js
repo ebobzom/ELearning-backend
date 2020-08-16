@@ -3,7 +3,7 @@ module.exports = {
     script: 'app.js',
     instances : "max",
     exec_mode : "cluster",
-    watch: 'src'
+    watch: 'app.js'
   }],
 
   deploy : {
