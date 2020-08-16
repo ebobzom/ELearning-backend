@@ -15,6 +15,7 @@ const forgotPasswordRouter = require('./src/controllers/CREATE/forgotPassword');
 const resetPasswordRouter = require('./src/controllers/UPDATE/resetPassword');
 const userImageUpload = require('./src/controllers/CREATE/uploadImage');
 const changePasswordRouter = require('./src/controllers/UPDATE/changePassword');
+const resentUserEmailConfirmation = require('./src/controllers/CREATE/resendConfirmEmail');
 
 // teacher
 const addTeacherRouter = require('./src/controllers/CREATE/addTeacher');
@@ -120,6 +121,9 @@ app.use(baseUrl, deleteClassReviewRouter);
 
 // admin update user role
 app.use(baseUrl, updateUserRole);
+
+// resend email
+app.use(baseUrl, resentUserEmailConfirmation);
 
 // error handler
 app.use((err, req, res, next) => {
