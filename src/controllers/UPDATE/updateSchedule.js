@@ -18,17 +18,17 @@ updateScheduleRouter.put('/schedule', updateScheduleValidation, verifyToken, (re
 
     const {
         courseTitle: course_title, description, scheduleDate: schedule_date,
-        courseOwnerId: course_owner_id, teacherId: teacher_id, startTime: start_time, scheduleId: schedule_id
+        courseOwnerEmail: course_owner_email, teacherId: teacher_id, startTime: start_time, scheduleId: schedule_id
     } = req.body;
 
     const postData = [
         course_title, description, schedule_date,
-        course_owner_id, teacher_id, start_time, schedule_id
+        course_owner_email, teacher_id, start_time, schedule_id
     ];
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
         const insertQuery = `UPDATE schedule SET course_title = ?, description = ?, schedule_date = ?,
-        course_owner_id = ?, teacher_id = ?, start_time = ? WHERE schedule_id = ?`;
+        course_owner_email = ?, teacher_id = ?, start_time = ? WHERE schedule_id = ?`;
 
         db.query(insertQuery, postData, (err, result) => {
             if(err){

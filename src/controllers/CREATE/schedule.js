@@ -18,12 +18,12 @@ addScheduleRouter.post('/schedule', addScheduleValidation, verifyToken, (req, re
 
     const {
         courseTitle: course_title, description, scheduleDate: schedule_date,
-        courseOwnerId: course_owner_id, teacherId: teacher_id, startTime: start_time
+        courseOwnerEmail: course_owner_email, teacherId: teacher_id, startTime: start_time
     } = req.body;
 
     const postData = {
         course_title, description, schedule_date,
-        course_owner_id, teacher_id, start_time
+        course_owner_email, teacher_id, start_time
     };
 
     if(res.payload.isAdmin === 1 || res.payload.isSubAdmin === 1){
@@ -43,7 +43,7 @@ addScheduleRouter.post('/schedule', addScheduleValidation, verifyToken, (req, re
                     status: 'success',
                     data: {
                         courseTitle: course_title, description, scheduleDate: schedule_date,
-                        courseOwberId: course_owner_id, teacherId: teacher_id, startTime: start_time, sheduleId: result.insertId
+                        courseOwberEmail: course_owner_email, teacherId: teacher_id, startTime: start_time, sheduleId: result.insertId
                     }
                 });
             }else{

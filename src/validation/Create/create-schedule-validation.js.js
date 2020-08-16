@@ -4,7 +4,7 @@ module.exports =  [
     check('courseTitle').isString(),
     check('description').isString(),
     check('scheduleDate').isString(),
-    check('courseOwnerId').isString(),
+    check('courseOwnerEmail').isEmail(),
     check('startTime').isString(),
     check('teacherId').isInt()
 ]
