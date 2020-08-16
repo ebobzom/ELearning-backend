@@ -35,6 +35,7 @@ const updateScheduleRouter = require('./src/controllers/UPDATE/updateSchedule');
 const deleteScheduleRouter = require('./src/controllers/DELETE/deteteSchedule');
 
 // class request
+const getOneRequestRouter = require('./src/controllers/GET/getOneRequest');
 const getAllRequestRouter = require('./src/controllers/GET/getAllRequests');
 const classRequestRouter = require('./src/controllers/CREATE/classRequest');
 const updateClassRequestRouter = require('./src/controllers/UPDATE/updateClassRequest');
@@ -104,7 +105,8 @@ app.use(baseUrl, addScheduleRouter);
 app.use(baseUrl, updateScheduleRouter);
 app.use(baseUrl, deleteScheduleRouter);
 
-// class request
+// class request 
+app.use(baseUrl, getOneRequestRouter);
 app.use(baseUrl, getAllRequestRouter);
 app.use(baseUrl, classRequestRouter); 
 app.use(baseUrl, updateClassRequestRouter);

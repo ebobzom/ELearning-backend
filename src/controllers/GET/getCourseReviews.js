@@ -4,8 +4,6 @@ const { verifyTokenForFetchingCourses } = require('../../auth/middleware');
 const logError = require('../../utils/logErrors');
 getCourseReviewsRouter.get('/reviews', verifyTokenForFetchingCourses, (req, res) => {
 
-    const { amount } = req.params;
-
     if(!res.registeredUser){
         let query = `SELECT review_id, r.course_id, r.user_id, review_date, comment, first_name, last_name FROM review AS r, users AS u WHERE r.user_id = u.user_id`;
         
