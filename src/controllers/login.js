@@ -65,7 +65,7 @@ loginRouter.post('/', loginValidation, (req, res) => {
                     isSubAdmin: result[0].is_sub_admin
                 };
 
-                jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '5h' }, (err, tokenValue) => {
+                jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '10h' }, (err, tokenValue) => {
                     if(err){
                         logError(err);
                         res.status(501).json({
@@ -75,32 +75,80 @@ loginRouter.post('/', loginValidation, (req, res) => {
                         return;
                     }
 
-                    // send response
-                    res.cookie('token', tokenValue);
-                    res.status(200).json({
-                        status: 'success',
-                        data: {
-                            userId: result[0].user_id,
-                            firstName: result[0].first_name,
-                            lastName: result[0].last_name,
-                            email: result[0].email,
-                            token: tokenValue
+                    // get courses with there reviews, user requests and schedule
+
+                    let freeUserQuery = `SELECT course_id, course_title, subject, c.description as course_description, course_url, 
+                    course_duration, full_name as teacher, t.description teacher_info FROM courses AS c, teachers AS t WHERE paid_course = 0`;
+                    let paidUSERCoursesQuery =`SELECT course_id, course_title, subject, c.description as course_description, course_url, 
+                    course_duration, full_name as teacher, t.description teacher_info FROM courses AS c, teachers AS t WHERE owner_email='${email}'`;
+                    let reviewsQuery = `SELECT review_id, r.course_id, r.user_id, review_date, comment, first_name, last_name FROM review AS r, users AS u WHERE r.user_id = u.user_id`;
+                    db.query(freeUserQuery, (err, val1) => {
+                        if(err){
+                            logError(err);
+                            res.status(501).json({
+                                status: 'error',
+                                msg: 'An error occurred please contact admin'
+                            });
+                            return;
                         }
+
+                        let freeUserQueryResult = val1;
+
+                        db.query(paidUSERCoursesQuery, (err, val2) => {
+                            if(err){
+                                logError(err);
+                                res.status(501).json({
+                                    status: 'error',
+                                    msg: 'An error occurred please contact admin'
+                                });
+                                return;
+                            }
+                            let paidUSERCoursesQueryResult = val2;
+
+                            db.query(reviewsQuery, (err, val3) =>{
+                                if(err){
+                                    logError(err);
+                                    res.status(501).json({
+                                        status: 'error',
+                                        msg: 'An error occurred please contact admin'
+                                    });
+                                    return;
+                                }
+                                let reviewsQueryResult = val3;
+
+                                // send response
+                                res.cookie('token', tokenValue);
+                                return res.status(200).json({
+                                    status: 'success',
+                                    data: {
+                                        userDetails: {
+                                            userId: result[0].user_id,
+                                            firstName: result[0].first_name,
+                                            lastName: result[0].last_name,
+                                            email: result[0].email,
+                                            token: tokenValue
+                                        },
+                                        courses:{
+                                            freeCourses: freeUserQueryResult,
+                                            paidCourse: paidUSERCoursesQueryResult,
+                                            courseReviews: reviewsQueryResult
+                                        }
+                                    }
+                                }); 
+                            });
+                        });
+                        
                     });
-                    return;
                 });
                 return;
-            }
-
-            // for invalid password
-            res.status(501).json({
-                status: 'error',
-                msg: 'incorrect email or password'
-            });
-            return;
+            }else{
+                // for invalid password
+                return res.status(501).json({
+                    status: 'error',
+                    msg: 'incorrect email or password'
+                });
+            }   
         });
-
-
     });
 
 });
