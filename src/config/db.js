@@ -18,7 +18,7 @@ db.connect(err => {
     console.log('database connected');
 });
 db.on('error', (err) => {
-    console.log('database error: ', err.message)
+    console.log('database error: ', err.sqlMessage)
 })
 
 module.exports = db;
