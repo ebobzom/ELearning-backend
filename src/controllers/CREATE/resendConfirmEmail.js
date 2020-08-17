@@ -1,11 +1,11 @@
 const resendEmailConfirmation = require('express').Router();
 const { verifyToken } = require('../../auth/middleware');
 const { validationResult } = require('express-validator');
-// const resendEmailConfirmationValidation = require('./../../validation/CREATE/resedEmail');
+const resendEmailConfirmationValidation = require('./../../validation/CREATE/resedEmail');
 const db = require('../../config/db');
 const logError = require('../../utils/logErrors');
 
-resendEmailConfirmation.post('/emailConfirmation', verifyToken, (req, res) => {
+resendEmailConfirmation.post('/emailConfirmation',resendEmailConfirmationValidation, verifyToken, (req, res) => {
 
     const errors = validationResult(req);
 
