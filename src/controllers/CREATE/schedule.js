@@ -1,9 +1,18 @@
 const addScheduleRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const addScheduleValidation = require('../../validation/CREATE/create-schedule-validation.js');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let addScheduleValidation =  [
+    check('courseTitle').isString(),
+    check('description').isString(),
+    check('scheduleDate').isString(),
+    check('courseOwnerEmail').isEmail(),
+    check('startTime').isString(),
+    check('teacherId').isInt()
+]
 
 addScheduleRouter.post('/schedule', addScheduleValidation, verifyToken, (req, res) => {
     

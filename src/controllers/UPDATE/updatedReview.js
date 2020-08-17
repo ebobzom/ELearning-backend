@@ -1,9 +1,16 @@
 const updateClassReviewRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const updateClassRequestValidation = require('../../validation/UPDATE/review-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let updateClassRequestValidation =  [
+    check('comment').isString(),
+    check('courseId').isInt(),
+    check('reviewId').isInt(),
+    check('userId').isString()
+]
 
 updateClassReviewRouter.put('/review', updateClassRequestValidation, verifyToken, (req, res) => {
     

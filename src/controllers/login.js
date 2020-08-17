@@ -5,8 +5,12 @@ const { validationResult } = require('express-validator');
 const db = require('../config/db');
 const logError = require('../utils/logErrors');
 const loginRouter = express.Router();
+const { check } = require('express-validator');
 
-const loginValidation = require('../validation/login-validation');
+const loginValidation = [
+    check('email').isEmail().withMessage('invalid email'),
+    check('password').isLength({ min: 5, max: 15 }).withMessage('password must be more than 5 and less than 16 characters'),
+]
 
 loginRouter.post('/', loginValidation, (req, res) => {
     // grap user datails

@@ -1,9 +1,13 @@
 const deleteTeacherRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const deleteTeacherValidation = require('../../validation/DELETE/delete-teacher-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let deleteTeacherValidation = [
+    check('teacherId', 'parameter must be an integer').exists().toInt().isInt()
+]
 
 deleteTeacherRouter.delete('/teacher/:teacherId', deleteTeacherValidation, verifyToken, (req, res) => {
     

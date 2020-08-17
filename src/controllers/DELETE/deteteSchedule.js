@@ -1,9 +1,13 @@
 const deleteScheduleRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const deleteScheduleValidation = require('../../validation/DELETE/delete-schedule-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let deleteScheduleValidation = [
+    check('scheduleId', 'parameter must be an integer').exists().toInt().isInt()
+]
 
 deleteScheduleRouter.delete('/schedule/:scheduleId', deleteScheduleValidation, verifyToken, (req, res) => {
     

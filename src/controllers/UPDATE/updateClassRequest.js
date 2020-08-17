@@ -1,9 +1,18 @@
 const updateClassRequestRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const updateClassRequestValidation = require('../../validation/UPDATE/update-request-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let updateClassRequestValidation =  [
+    check('topic').isString(),
+    check('subject').isString(),
+    check('studentClass').isString(),
+    check('subject').isLength({ max: 20 }).withMessage('full name must be less then 20 characters'),
+    check('userId').isString(),
+    check('requestId').isInt()
+]
 
 updateClassRequestRouter.put('/request', updateClassRequestValidation, verifyToken, (req, res) => {
     

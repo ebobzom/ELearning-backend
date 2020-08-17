@@ -1,9 +1,13 @@
 const deleteclassRequestRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const deleteClassRequestValidation = require('../../validation/DELETE/class-request-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let deleteClassRequestValidation = [
+    check('requestId', 'parameter must be an integer').exists().toInt().isInt()
+]
 
 deleteclassRequestRouter.delete('/request/:requestId', deleteClassRequestValidation, verifyToken, (req, res) => {
     

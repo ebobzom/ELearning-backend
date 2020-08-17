@@ -2,7 +2,22 @@ const getCourseRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyTokenForFetchingCourses } = require('../../auth/middleware');
 const logError = require('../../utils/logErrors');
-getCourseRouter.get('/courses/:amount', verifyTokenForFetchingCourses, (req, res) => {
+
+const { check } = require('express-validator');
+
+let amountValidation = [
+    check('amount', 'parameter must be an integer').exists().isInt()
+]
+
+getCourseRouter.get('/courses/:amount', amountValidation, verifyTokenForFetchingCourses, (req, res) => {
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        return res.status(400).json({
+            status: 'error',
+            msg: errors.array()
+        });
+    }
 
     const { amount } = req.params;
     console.log('regis',res.registeredUser)

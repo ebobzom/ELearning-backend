@@ -1,8 +1,12 @@
 const getOneRequestRouter = require('express').Router();
 const db = require('../../config/db');
 const { validationResult } = require('express-validator');
-const getOneScheduleValidation = require('../../validation/GET/get-one-schedule-validation');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let getOneScheduleValidation = [
+    check('email', 'parameter must be an integer').exists().isEmail()
+]
 
 getOneRequestRouter.get('/requests/:email', getOneScheduleValidation, (req, res) => {
     const errors = validationResult(req);

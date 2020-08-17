@@ -1,9 +1,13 @@
 const resendEmailConfirmation = require('express').Router();
 const { verifyToken } = require('../../auth/middleware');
 const { validationResult } = require('express-validator');
-const resendEmailConfirmationValidation = require('./../../validation/CREATE/resedEmail');
 const db = require('../../config/db');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let resendEmailConfirmationValidation =  [
+    check('userId').isString()
+]
 
 resendEmailConfirmation.post('/emailConfirmation',resendEmailConfirmationValidation, verifyToken, (req, res) => {
 

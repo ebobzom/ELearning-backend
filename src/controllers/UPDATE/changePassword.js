@@ -3,8 +3,17 @@ const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
-const changePassword = require('../../validation/UPDATE/change-password-validation');
 const changePasswordRouter = require('express').Router();
+const { check } = require('express-validator');
+
+let changePassword =  [
+    check('password').isString(),
+    check('password').isLength({ max: 20 }).withMessage('password must be less then 20 characters'),
+    check('confirmPassword').isString(),
+    check('confirmPassword').isLength({ max: 20 }).withMessage('confirm password must be less then 20 characters'),
+    check('oldPassword').isString(),
+    check('oldPassword').isLength({ max: 20 }).withMessage('old password must be less then 20 characters')
+]
 
 
 changePasswordRouter.post('/changePassword', changePassword, verifyToken, (req, res) => {

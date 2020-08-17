@@ -1,9 +1,19 @@
 const updateScheduleRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const updateScheduleValidation = require('../../validation/UPDATE/update-schedule-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+const updateScheduleValidation =  [
+    check('courseTitle').isString(),
+    check('description').isString(),
+    check('scheduleDate').isString(),
+    check('courseOwnerEmail').isEmail(),
+    check('startTime').isString(),
+    check('teacherId').isInt(),
+    check('scheduleId').isInt()
+]
 
 updateScheduleRouter.put('/schedule', updateScheduleValidation, verifyToken, (req, res) => {
     

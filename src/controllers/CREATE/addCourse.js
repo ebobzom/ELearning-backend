@@ -1,9 +1,19 @@
 const addCourseRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const addCourseValidation = require('../../validation/CREATE/course-addition-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+const addCourseValidation =  [
+    check('courseTitle').isString(),
+    check('subject').isString().isLength({ max: 25 }).withMessage('subject must be less then 26 characters'),
+    check('description').isString(),
+    check('courseUrl').isString(),
+    check('courseDuration').isString(),
+    check('ownerEmail').isEmail(),
+    check('teacherId').isInt()
+]
 
 addCourseRouter.post('/course', addCourseValidation, verifyToken, (req, res) => {
     

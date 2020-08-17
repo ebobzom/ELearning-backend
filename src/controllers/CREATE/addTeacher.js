@@ -1,10 +1,16 @@
 const addTeacherRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const addTeacherValidation = require('../../validation/CREATE/add-teacher-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
-addTeacherRouter.post('/teacher', addTeacherValidation, verifyToken, (req, res) => {
+const { check } = require('express-validator');
+
+let addTeacherValidation = [
+    check('fullName').isString(),
+    check('fullName').isLength({ max: 20 }).withMessage('full name must be less then 20 characters'),
+    check('description').isString()
+]
+let = addTeacherRouter.post('/teacher', addTeacherValidation, verifyToken, (req, res) => {
     
     const errors = validationResult(req);
 

@@ -1,13 +1,17 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-// const forgotPasswordValidation = require('../../validation/CREATE/forgot-password-validation');
 const sendEmail = require('../../utils/sendEmail');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+const forgotPasswordValidation = [
+    check('email').isEmail().withMessage('email is required')
+];
 
 const forgotPasswordRouter = express.Router();
 
-forgotPasswordRouter.post('/forgotPassword', (req, res) => {
+forgotPasswordRouter.post('/forgotPassword', forgotPasswordValidation, (req, res) => {
 
     const errors = validationResult(req);
     if(!errors.isEmpty()){

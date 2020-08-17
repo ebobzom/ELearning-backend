@@ -1,9 +1,16 @@
 const updateUserRoleRouter = require('express').Router();
 const db = require('../../config/db');
 const { verifyToken } = require('../../auth/middleware');
-const updateUserRoleValidation = require('../../validation/UPDATE/update-role-validation');
 const { validationResult } = require('express-validator');
 const logError = require('../../utils/logErrors');
+const { check } = require('express-validator');
+
+let updateUserRoleValidation =  [
+    check('email').isEmail(),
+    check('isAdmin').isInt(),
+    check('isSubAdmin').isInt()
+]
+
 
 updateUserRoleRouter.put('/role', updateUserRoleValidation, verifyToken, (req, res) => {
     
