@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-const connectionString = '';
+const connectionString = 'mysql://b34d60a8b0b0d9:3c1f968f@us-cdbr-east-02.cleardb.com/heroku_cc84d2bfa69a0d9?reconnect=true';
 const configObj = {
     host: process.env.HOST,
     user: process.env.USER,
