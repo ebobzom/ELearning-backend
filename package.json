@@ -4,8 +4,8 @@
   "description": "e-learning-backend",
   "main": "app.js",
   "scripts": {
-    "start1": "pm2-runtime start ecosystem.config.js --env production",
-    "start": "node app.js",
+    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "start1": "node app.js",
     "dev": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -9,14 +9,17 @@ const configObj = {
 };
 
 const config = connectionString || configObj;
-const db = mysql.createConnection(config);
+const db = mysql.createPool(config);
+db.on('connection', () => {
+    console.log('connection established');
+})
 
-db.connect(err => {
-    if(err){
-        console.log(err.message);
-    }
-    console.log('database connected');
-});
+// db.connect(err => {
+//     if(err){
+//         console.log(err.message);
+//     }
+//     console.log('database connected');
+// });
 db.on('error', (err) => {
     console.log('database error: ', err.message)
 })
