@@ -72,7 +72,7 @@ app.use(cookieparser({
     httpOnly: true,
     expires: expiryDate
 }));
-app.use(morgan('combined'));
+//app.use(morgan('combined'));
 app.use(limiter);
 app.use(hpp());
 app.use(fileupload({ useTempFiles: true }));
