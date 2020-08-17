@@ -3,7 +3,7 @@ const db = require('../../config/db');
 const { verifyTokenForFetchingCourses } = require('../../auth/middleware');
 const logError = require('../../utils/logErrors');
 
-const { check } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
 let amountValidation = [
     check('amount', 'parameter must be an integer').exists().isInt()
