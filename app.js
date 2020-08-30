@@ -76,6 +76,7 @@ app.use(cookieparser({
 app.use(limiter);
 app.use(hpp());
 app.use(fileupload({ useTempFiles: true }));
+app.options('/login', cors())
 
 // All Routes
 app.use(baseUrl + '/signup', signuRouter);
