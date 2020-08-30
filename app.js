@@ -5,6 +5,8 @@ const fileupload = require('express-fileupload');
 const rateLimit = require("express-rate-limit");
 const morgan = require('morgan');
 const hpp = require('hpp');
+const cors = require('cors')
+
 require('dotenv').config();
 
 const signuRouter =  require('./src/controllers/CREATE/signup');
@@ -65,6 +67,7 @@ const PORT = process.env.PORT || 4000;
 var expiryDate = new Date(Date.now() + 60 * 60 * 5000) // 5 hours
 
 app.use(helmet());
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieparser({
